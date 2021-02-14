@@ -7,6 +7,10 @@ const {
   shuffle,
 } = require(`../../utils`);
 
+const {
+  MAX_COUNT
+} = require(`../../constants`);
+
 // данные по умолчанию
 const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
@@ -72,11 +76,11 @@ const generateOffers = (count) => (
 module.exports = {
   name: `--generate`,
   run(args) {
-    if (args > 1000) {
+    const [count] = args;
+    const countOffer = Number.parseInt(count, 10) || DEFAULT_COUNT;
+    if (countOffer > MAX_COUNT) {
       console.info(`Не больше 1000 объявлений`);
     } else {
-      const [count] = args;
-      const countOffer = Number.parseInt(count, 10) || DEFAULT_COUNT;
       const content = JSON.stringify(generateOffers(countOffer));
       fs.writeFile(FILE_NAME, content, (err) => {
         if (err) {
